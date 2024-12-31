@@ -513,7 +513,7 @@ class Catalogador:
                                                                 str(i+1)]['%'] = 'N/A'
 
         end_time_all = time.time()
-        logging(f"{Fore.GREEN}[CATALOGAÇÃO]{Fore.RESET}", f"catalogação finalizada em todos ativos{Fore.LIGHTBLACK_EX}(demorou {abs(end_time_all-start_time_all)} segundos){Fore.RESET}")
+        self.botManager.logging(f"{Fore.GREEN}[CATALOGAÇÃO]{Fore.RESET}", f"catalogação finalizada em todos ativos{Fore.LIGHTBLACK_EX}(demorou {abs(end_time_all-start_time_all)} segundos){Fore.RESET}")
         
         catalogacao_organizada = self.organizar_catalogacao_por_horario(catalogacao)
         return catalogacao_organizada
@@ -782,6 +782,8 @@ class Catalogador:
                         else:
                             # ativo fechado
                             self.botManager.api_telegram.send_message(self.botManager.id_grupo_telegram, self.botManager.messageString.active_closed_string(operacao))
+
+                            
                         
                     else:
                         # horario da operacao expirado
@@ -835,6 +837,7 @@ class BotManager:
             try:
                 # 1. gerar lista
                 catalogacao = self.catalogador.gerar_lista()
+                print('catalogacao:', catalogacao)
                 
                 if len(catalogacao["lista"]) < 3:
                     minutos = int(self.horario.now().strftime('%M'))
