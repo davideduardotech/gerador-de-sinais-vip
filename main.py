@@ -530,7 +530,7 @@ class Catalogador:
             list: Lista de operações filtradas no formato [{ativo: {horario: dados}}].
         """
         # Obter o horário atual
-        agora = datetime.now()
+        agora = self.botManager.horario.now()
         hora_atual = agora.strftime("%H:00")
         minuto_atual = agora.minute
 
@@ -544,13 +544,14 @@ class Catalogador:
 
         # Obter os dados do catálogo para o período atual
         catalogo_horario_atual = catalogacao_organizada.get(hora_atual, {})
-
+        
         lista_operacoes = []
 
         for ativo, sinais in catalogo_horario_atual.items():
             for horario, dados in sinais.items():
                 # Filtrar apenas os sinais após o horário atual
-                hora_sinal = datetime.strptime(f"{datetime.now().strftime('%d/%m/%Y')} {horario}", "%d/%m/%Y %H:%M")
+                hora_sinal = datetime.strptime(f"{self.botManager.horario.now().strftime('%d/%m/%Y')} {horario}", "%d/%m/%Y %H:%M")
+                hora_sinal = self.botManager.horario.timezone.localize(hora_sinal)
                 if hora_sinal.timestamp() >= agora.timestamp():
                     
                     # Verificar assertividade com base nas configurações
