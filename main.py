@@ -808,6 +808,22 @@ class BotManager:
 
         self.catalogador = Catalogador(self)
         
+    def criar_pasta_de_imagens(self):
+        """
+        Verifica se a pasta 'machinelearning/temporary images' existe,
+        e caso não exista, cria a pasta.
+        """
+        try:
+            caminho_pasta = "temporary images"
+            if not os.path.exists(caminho_pasta):
+                os.makedirs(caminho_pasta)
+                self.logging(f"{Fore.GREEN}[BOTMANAGER]{Fore.RESET}", f"Pasta '{caminho_pasta}' criada com sucesso.")
+                
+            else:
+                self.logging(f"{Fore.GREEN}[BOTMANAGER]{Fore.RESET}", f"Pasta '{caminho_pasta}' já existe.")
+               
+        except Exception as erro:
+            print(f"Erro ao verificar/criar a pasta: {erro}")
     
     def datetime_and_weekday_in_string(self): 
         days = ['Segunda-Feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado','Domingo']
@@ -878,7 +894,7 @@ class BotManager:
         print("| Detalhes")
         print("Desenvolvedor: David Eduardo (https://github.com/davideduardotech)")
       
-        
+        self.criar_pasta_de_imagens()
         self.conectar_iqoption()    
         self.start()
 
